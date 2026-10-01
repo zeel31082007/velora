@@ -25,6 +25,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   output: "export",
+  basePath: "/velora",
 
   async headers() {
     return [
@@ -35,5 +36,4 @@ const nextConfig: NextConfig = {
     ];
   },
 };
-
 export default nextConfig;
