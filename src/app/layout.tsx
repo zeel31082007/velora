@@ -24,7 +24,11 @@ export const metadata: Metadata = {
     "Preserve moments. Revisit emotions. Build your own universe of memories.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"

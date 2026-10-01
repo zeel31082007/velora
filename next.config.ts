@@ -15,8 +15,7 @@ const securityHeaders = [
   },
   {
     key: "Permissions-Policy",
-    value:
-      "camera=(), microphone=(), geolocation=()",
+    value: "camera=(), microphone=(), geolocation=()",
   },
   {
     key: "X-DNS-Prefetch-Control",
@@ -25,6 +24,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  output: "export",
+
   async headers() {
     return [
       {
