@@ -1,0 +1,1554 @@
+@import "tailwindcss";
+
+:root {
+  --background: #030014;
+  --foreground: #ededed;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-cormorant);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* =========================================================
+   SPACE BACKGROUND
+   ========================================================= */
+
+.bg-space-gradient {
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    #1a0a2e 0%,
+    #030014 50%,
+    #000000 100%
+  );
+}
+
+/* =========================================================
+   CSS STAR FIELD
+   ========================================================= */
+
+.stars {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+}
+
+.stars-sm {
+  background-image:
+    radial-gradient(
+      1px 1px at 20px 30px,
+      rgba(255, 255, 255, 0.8),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 40px 70px,
+      rgba(255, 255, 255, 0.5),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 50px 160px,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 90px 40px,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 130px 80px,
+      rgba(255, 255, 255, 0.7),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 160px 120px,
+      rgba(255, 255, 255, 0.5),
+      transparent
+    );
+
+  background-size: 200px 200px;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+.stars-md {
+  background-image:
+    radial-gradient(
+      1.5px 1.5px at 100px 50px,
+      rgba(200, 180, 255, 0.9),
+      transparent
+    ),
+    radial-gradient(
+      1.5px 1.5px at 200px 150px,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 300px 100px,
+      rgba(255, 255, 255, 0.5),
+      transparent
+    ),
+    radial-gradient(
+      1.5px 1.5px at 400px 200px,
+      rgba(200, 180, 255, 0.7),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 250px 250px,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+
+  background-size: 450px 450px;
+  animation: twinkle 6s ease-in-out infinite alternate-reverse;
+  opacity: 0.7;
+}
+
+.stars-lg {
+  background-image:
+    radial-gradient(
+      2px 2px at 150px 100px,
+      rgba(255, 255, 255, 0.9),
+      transparent
+    ),
+    radial-gradient(
+      2px 2px at 350px 300px,
+      rgba(180, 160, 255, 0.8),
+      transparent
+    ),
+    radial-gradient(
+      1.5px 1.5px at 500px 150px,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    );
+
+  background-size: 600px 600px;
+
+  animation:
+    drift 20s linear infinite,
+    twinkle 8s ease-in-out infinite alternate;
+
+  opacity: 0.5;
+}
+
+/* =========================================================
+   GENERAL ANIMATIONS
+   ========================================================= */
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-600px);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 1s ease-out both;
+}
+
+.animation-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animation-delay-150 {
+  animation-delay: 0.18s;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.25s;
+}
+
+.animation-delay-300 {
+  animation-delay: 0.4s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.55s;
+}
+
+.animation-delay-500 {
+  animation-delay: 0.7s;
+}
+
+/* =========================================================
+   CURSOR GLOW
+   ========================================================= */
+
+.cursor-glow {
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.12) 0%,
+    rgba(99, 102, 241, 0.06) 35%,
+    transparent 70%
+  );
+
+  will-change: transform, opacity;
+}
+
+/* =========================================================
+   CTA BUTTON
+   ========================================================= */
+
+.cta-button {
+  background: linear-gradient(
+    135deg,
+    #7c3aed 0%,
+    #6366f1 50%,
+    #3b82f6 100%
+  );
+
+  box-shadow:
+    0 0 24px rgba(139, 92, 246, 0.35),
+    0 0 48px rgba(99, 102, 241, 0.15);
+
+  transition:
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s ease;
+}
+
+.cta-button:hover {
+  transform: scale(1.06);
+
+  box-shadow:
+    0 0 32px rgba(139, 92, 246, 0.5),
+    0 0 64px rgba(59, 130, 246, 0.25);
+}
+
+.cta-button:active {
+  transform: scale(1.02);
+}
+
+.cta-shimmer {
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 60%
+  );
+
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    background-position: 200% center;
+  }
+
+  50% {
+    background-position: -200% center;
+  }
+}
+
+/* =========================================================
+   SHOOTING STARS
+   ========================================================= */
+
+.shooting-star {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.9),
+    transparent
+  );
+
+  box-shadow:
+    0 0 6px 1px rgba(200, 180, 255, 0.6);
+
+  transform: rotate(-45deg);
+  opacity: 0;
+
+  animation-name: shoot;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+
+  will-change: transform, opacity;
+}
+
+@keyframes shoot {
+  0% {
+    opacity: 0;
+    transform: rotate(-45deg) translateX(0) scaleX(0.3);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(-45deg) translateX(320px) scaleX(1);
+  }
+}
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+
+/* =========================================================
+   INTERACTIVE UNIVERSE
+   ========================================================= */
+
+.universe-field {
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+
+  position: relative;
+
+  transition:
+    filter 1s ease,
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* =========================================================
+   BACKGROUND + MEMORY STARS
+   ========================================================= */
+
+.universe-star {
+  background: radial-gradient(
+    circle,
+    #fff 30%,
+    rgba(200, 180, 255, 0.8) 70%
+  );
+
+  box-shadow:
+    0 0 4px 1px rgba(167, 139, 250, 0.4);
+
+  cursor: pointer;
+
+  animation-name: star-twinkle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+
+  transform: translate(
+    calc(-50% + var(--parallax-x) * var(--star-depth, 0.5)),
+    calc(-50% + var(--parallax-y) * var(--star-depth, 0.5))
+  );
+
+  transition:
+    box-shadow 0.35s ease,
+    filter 0.35s ease,
+    scale 0.35s ease,
+    opacity 0.8s ease;
+
+  will-change: transform, box-shadow;
+}
+
+.memory-star {
+  background: radial-gradient(
+    circle,
+    #ffffff 15%,
+    #c4b5fd 45%,
+    #8b5cf6 70%,
+    transparent 100%
+  );
+
+  box-shadow:
+    0 0 6px 2px rgba(167, 139, 250, 0.8),
+    0 0 18px 6px rgba(139, 92, 246, 0.5),
+    0 0 35px 12px rgba(124, 58, 237, 0.25);
+
+  scale: 1.4;
+}
+
+.memory-star:hover {
+  box-shadow:
+    0 0 8px 3px rgba(196, 181, 253, 1),
+    0 0 25px 8px rgba(139, 92, 246, 0.7),
+    0 0 45px 15px rgba(124, 58, 237, 0.4);
+}
+
+.universe-star:hover {
+  box-shadow:
+    0 0 8px 2px rgba(167, 139, 250, 0.8),
+    0 0 20px 4px rgba(139, 92, 246, 0.4);
+
+  filter: brightness(1.4);
+  z-index: 2;
+}
+
+.universe-star:hover,
+.universe-star:focus-visible {
+  scale: 1.8;
+}
+
+@keyframes star-twinkle {
+  0% {
+    opacity: 0.35;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   MEMORY STAR CATEGORIES
+   ========================================================= */
+
+.memory-star-achievement {
+  background: radial-gradient(
+    circle,
+    #fff7cc 15%,
+    #facc15 45%,
+    #f59e0b 70%,
+    transparent 100%
+  );
+
+  box-shadow:
+    0 0 6px 2px rgba(250, 204, 21, 0.9),
+    0 0 18px 6px rgba(245, 158, 11, 0.55),
+    0 0 35px 12px rgba(245, 158, 11, 0.25);
+}
+
+.memory-star-adventure {
+  background: radial-gradient(
+    circle,
+    #e0f2fe 15%,
+    #38bdf8 45%,
+    #2563eb 70%,
+    transparent 100%
+  );
+
+  box-shadow:
+    0 0 6px 2px rgba(56, 189, 248, 0.9),
+    0 0 18px 6px rgba(37, 99, 235, 0.55),
+    0 0 35px 12px rgba(37, 99, 235, 0.25);
+}
+
+.memory-star-family {
+  background: radial-gradient(
+    circle,
+    #ffe4e6 15%,
+    #f472b6 45%,
+    #ec4899 70%,
+    transparent 100%
+  );
+
+  box-shadow:
+    0 0 6px 2px rgba(244, 114, 182, 0.9),
+    0 0 18px 6px rgba(236, 72, 153, 0.55),
+    0 0 35px 12px rgba(236, 72, 153, 0.25);
+}
+
+.memory-star-celebration {
+  background: radial-gradient(
+    circle,
+    #ffedd5 15%,
+    #fb923c 45%,
+    #f97316 70%,
+    transparent 100%
+  );
+
+  box-shadow:
+    0 0 6px 2px rgba(251, 146, 60, 0.9),
+    0 0 18px 6px rgba(249, 115, 22, 0.55),
+    0 0 35px 12px rgba(249, 115, 22, 0.25);
+}
+
+.memory-star-growth {
+  background: radial-gradient(
+    circle,
+    #dcfce7 15%,
+    #4ade80 45%,
+    #16a34a 70%,
+    transparent 100%
+  );
+
+  box-shadow:
+    0 0 6px 2px rgba(74, 222, 128, 0.9),
+    0 0 18px 6px rgba(22, 163, 74, 0.55),
+    0 0 35px 12px rgba(22, 163, 74, 0.25);
+}
+
+.memory-star-reflection {
+  background: radial-gradient(
+    circle,
+    #ede9fe 15%,
+    #a78bfa 45%,
+    #7c3aed 70%,
+    transparent 100%
+  );
+
+  box-shadow:
+    0 0 6px 2px rgba(167, 139, 250, 0.9),
+    0 0 18px 6px rgba(124, 58, 237, 0.55),
+    0 0 35px 12px rgba(124, 58, 237, 0.25);
+}
+
+.memory-star-milestone {
+  background: radial-gradient(
+    circle,
+    #ffffff 15%,
+    #c4b5fd 45%,
+    #8b5cf6 70%,
+    transparent 100%
+  );
+
+  box-shadow:
+    0 0 6px 2px rgba(167, 139, 250, 0.8),
+    0 0 18px 6px rgba(139, 92, 246, 0.5),
+    0 0 35px 12px rgba(124, 58, 237, 0.25);
+}
+
+/* =========================================================
+   MEMORY MODAL
+   ========================================================= */
+
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.memory-modal-backdrop {
+  animation: modal-fade-in 0.35s ease-out both;
+}
+
+.memory-modal-content {
+  animation: modal-slide-in 0.4s ease-out both;
+}
+
+/* =========================================================
+   CONSTELLATION LINES
+   ========================================================= */
+
+.constellation-line {
+  stroke: rgba(167, 139, 250, 0.35);
+  stroke-width: 0.45;
+  stroke-linecap: round;
+
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+
+  opacity: 0.35;
+
+  filter:
+    drop-shadow(0 0 2px rgba(167, 139, 250, 0.7))
+    drop-shadow(0 0 6px rgba(139, 92, 246, 0.35));
+
+  animation:
+    constellation-draw 1.6s ease
+      var(--constellation-delay, 0s)
+      forwards,
+    constellation-pulse 4s ease-in-out
+      calc(var(--constellation-delay, 0s) + 1.6s)
+      infinite;
+
+  transition:
+    opacity 0.5s ease,
+    stroke-width 0.5s ease,
+    filter 0.5s ease;
+}
+
+.universe-field > svg {
+  transform: translate(
+    var(--parallax-x),
+    var(--parallax-y)
+  );
+}
+
+.constellation-achievement {
+  stroke: rgba(250, 204, 21, 0.75);
+}
+
+.constellation-adventure {
+  stroke: rgba(96, 165, 250, 0.75);
+}
+
+.constellation-family {
+  stroke: rgba(244, 114, 182, 0.75);
+}
+
+.constellation-celebration {
+  stroke: rgba(251, 146, 60, 0.8);
+}
+
+.constellation-growth {
+  stroke: rgba(74, 222, 128, 0.75);
+}
+
+.constellation-reflection {
+  stroke: rgba(192, 132, 252, 0.75);
+}
+
+.constellation-milestone {
+  stroke: rgba(255, 255, 255, 0.75);
+}
+
+@keyframes constellation-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes constellation-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 0.75;
+  }
+}
+
+/* =========================================================
+   CONSTELLATION LABELS
+   ========================================================= */
+
+.constellation-label {
+  position: absolute;
+  z-index: 5;
+
+  pointer-events: auto;
+  cursor: pointer;
+
+  font-family: var(--font-display), serif;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.32em !important;
+
+  color: rgba(255, 255, 255, 0.55);
+
+  text-shadow:
+    0 0 7px currentColor,
+    0 0 16px currentColor !important;
+
+  white-space: nowrap;
+
+  animation: constellation-label-glow 4s ease-in-out infinite;
+
+  transition:
+    color 0.4s ease,
+    opacity 0.4s ease,
+    text-shadow 0.4s ease,
+    transform 0.4s ease;
+}
+
+.constellation-label:hover {
+  color: rgba(255, 255, 255, 0.95) !important;
+
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(139, 92, 246, 0.9),
+    0 0 35px rgba(139, 92, 246, 0.5) !important;
+}
+
+@keyframes constellation-label-glow {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* Category label colors */
+
+.constellation-label-achievement {
+  color: rgba(250, 204, 21, 0.78) !important;
+}
+
+.constellation-label-adventure {
+  color: rgba(96, 165, 250, 0.78) !important;
+}
+
+.constellation-label-family {
+  color: rgba(244, 114, 182, 0.78) !important;
+}
+
+.constellation-label-celebration {
+  color: rgba(251, 146, 60, 0.82) !important;
+}
+
+.constellation-label-growth {
+  color: rgba(74, 222, 128, 0.78) !important;
+}
+
+.constellation-label-reflection {
+  color: rgba(192, 132, 252, 0.78) !important;
+}
+
+.constellation-label-milestone {
+  color: rgba(221, 214, 254, 0.82) !important;
+}
+
+.constellation-label-active {
+  color: rgba(255, 255, 255, 0.95) !important;
+
+  filter: brightness(1.35);
+
+  text-shadow:
+    0 0 8px currentColor,
+    0 0 20px currentColor,
+    0 0 32px currentColor !important;
+}
+
+/* =========================================================
+   CONSTELLATION HOVER / FOCUS
+   ========================================================= */
+
+.universe-field[class*="constellation-hover-"]
+  .memory-star {
+  opacity: 0.25;
+  filter: saturate(0.4);
+
+  transition:
+    opacity 0.4s ease,
+    filter 0.4s ease,
+    scale 0.35s ease;
+}
+
+/* Selected constellation stars */
+
+.universe-field.constellation-hover-achievement
+  .memory-star-achievement,
+.universe-field.constellation-hover-adventure
+  .memory-star-adventure,
+.universe-field.constellation-hover-family
+  .memory-star-family,
+.universe-field.constellation-hover-celebration
+  .memory-star-celebration,
+.universe-field.constellation-hover-growth
+  .memory-star-growth,
+.universe-field.constellation-hover-reflection
+  .memory-star-reflection,
+.universe-field.constellation-hover-milestone
+  .memory-star-milestone {
+  opacity: 1;
+  filter: brightness(1.25) saturate(1.4);
+  scale: 1.7;
+}
+
+/* Fade unrelated constellation lines */
+
+.universe-field[class*="constellation-hover-"]
+  .constellation-line {
+  opacity: 0.08;
+}
+
+/* Selected constellation lines */
+
+.universe-field.constellation-hover-achievement
+  .constellation-achievement,
+.universe-field.constellation-hover-adventure
+  .constellation-adventure,
+.universe-field.constellation-hover-family
+  .constellation-family,
+.universe-field.constellation-hover-celebration
+  .constellation-celebration,
+.universe-field.constellation-hover-growth
+  .constellation-growth,
+.universe-field.constellation-hover-reflection
+  .constellation-reflection,
+.universe-field.constellation-hover-milestone
+  .constellation-milestone {
+  opacity: 1;
+  stroke-width: 0.7;
+
+  filter:
+    drop-shadow(0 0 3px rgba(255, 255, 255, 0.8))
+    drop-shadow(0 0 9px rgba(139, 92, 246, 0.8))
+    drop-shadow(0 0 18px rgba(139, 92, 246, 0.4));
+}
+
+/* Focus mode */
+
+.universe-field:has(.constellation-label-active)
+  .memory-star {
+  opacity: 0.18;
+  filter: saturate(0.4);
+}
+
+.universe-field:has(.constellation-label-active)
+  .constellation-line {
+  opacity: 0.08;
+}
+
+.universe-field:has(.constellation-label-active)
+  > .universe-star:not(.memory-star) {
+  opacity: 0.45;
+}
+
+/* =========================================================
+   CONSTELLATION VIEW
+   ========================================================= */
+
+.constellation-view-backdrop {
+  background: rgba(2, 0, 12, 0.72);
+  backdrop-filter: blur(12px);
+
+  animation: constellation-backdrop-in
+    0.35s ease forwards;
+}
+
+.constellation-view {
+  animation:
+    constellation-view-in
+    0.45s cubic-bezier(0.16, 1, 0.3, 1)
+    forwards;
+}
+
+.constellation-view-title {
+  font-family: var(--font-display), serif;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 300;
+  letter-spacing: 0.16em;
+  line-height: 1;
+
+  color: white;
+
+  text-shadow:
+    0 0 12px rgba(167, 139, 250, 0.7),
+    0 0 35px rgba(139, 92, 246, 0.45);
+}
+
+/* Title colors */
+
+.constellation-title-achievement {
+  color: #fde047;
+
+  text-shadow:
+    0 0 12px rgba(250, 204, 21, 0.8),
+    0 0 35px rgba(250, 204, 21, 0.35);
+}
+
+.constellation-title-adventure {
+  color: #7dd3fc;
+
+  text-shadow:
+    0 0 12px rgba(56, 189, 248, 0.8),
+    0 0 35px rgba(56, 189, 248, 0.35);
+}
+
+.constellation-title-family {
+  color: #f9a8d4;
+
+  text-shadow:
+    0 0 12px rgba(244, 114, 182, 0.8),
+    0 0 35px rgba(244, 114, 182, 0.35);
+}
+
+.constellation-title-celebration {
+  color: #fdba74;
+
+  text-shadow:
+    0 0 12px rgba(251, 146, 60, 0.8),
+    0 0 35px rgba(251, 146, 60, 0.35);
+}
+
+.constellation-title-growth {
+  color: #86efac;
+
+  text-shadow:
+    0 0 12px rgba(74, 222, 128, 0.8),
+    0 0 35px rgba(74, 222, 128, 0.35);
+}
+
+.constellation-title-reflection {
+  color: #c4b5fd;
+
+  text-shadow:
+    0 0 12px rgba(167, 139, 250, 0.8),
+    0 0 35px rgba(167, 139, 250, 0.35);
+}
+
+.constellation-title-milestone {
+  color: #ddd6fe;
+
+  text-shadow:
+    0 0 12px rgba(196, 181, 253, 0.8),
+    0 0 35px rgba(196, 181, 253, 0.35);
+}
+
+/* =========================================================
+   CONSTELLATION MEMORY CARDS
+   ========================================================= */
+
+.constellation-memory-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.constellation-memory-card::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 0% 50%,
+      rgba(139, 92, 246, 0.12),
+      transparent 55%
+    );
+
+  opacity: 0;
+
+  transition: opacity 0.4s ease;
+}
+
+.constellation-memory-card:hover::before {
+  opacity: 1;
+}
+
+@keyframes constellation-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes constellation-view-in {
+  from {
+    opacity: 0;
+    transform:
+      translateY(18px)
+      scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* =========================================================
+   CONSTELLATION ENTRY MODE
+   ========================================================= */
+
+.constellation-entry-active {
+  transition:
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1s ease;
+}
+
+/* Push unrelated memories back */
+
+.constellation-entry-active
+  .constellation-focus-distant {
+  opacity: 0.12 !important;
+  transform: scale(0.65);
+  filter: blur(0.5px);
+
+  transition:
+    opacity 1s ease,
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1s ease;
+}
+
+/* Bring selected constellation forward */
+
+.constellation-entry-active
+  .constellation-focus-target {
+  opacity: 1 !important;
+  transform: scale(1.5);
+
+  filter:
+    brightness(1.8)
+    drop-shadow(0 0 6px currentColor)
+    drop-shadow(0 0 18px currentColor)
+    drop-shadow(
+      0 0 35px rgba(139, 92, 246, 0.6)
+    );
+
+  transition:
+    opacity 1s ease,
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1s ease;
+
+  animation:
+    constellation-focus-pulse
+    2.5s ease-in-out infinite;
+}
+
+/* Entry constellation lines */
+
+.constellation-entry-active
+  .constellation-line {
+  opacity: 0.08;
+
+  transition:
+    opacity 1s ease,
+    filter 1s ease;
+}
+
+.constellation-entry-achievement
+  .constellation-achievement,
+.constellation-entry-adventure
+  .constellation-adventure,
+.constellation-entry-family
+  .constellation-family,
+.constellation-entry-celebration
+  .constellation-celebration,
+.constellation-entry-growth
+  .constellation-growth,
+.constellation-entry-reflection
+  .constellation-reflection,
+.constellation-entry-milestone
+  .constellation-milestone {
+  opacity: 0.85;
+
+  filter:
+    drop-shadow(0 0 5px currentColor)
+    drop-shadow(0 0 12px currentColor);
+
+  transition:
+    opacity 1s ease,
+    filter 1s ease;
+}
+
+/* Entry caption */
+
+.constellation-entry-caption {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+
+  color: rgba(196, 181, 253, 0.45);
+
+  text-shadow:
+    0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+.constellation-entry-caption span {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Entry pulse */
+
+@keyframes constellation-focus-pulse {
+  0%,
+  100% {
+    filter:
+      brightness(1.6)
+      drop-shadow(0 0 5px currentColor)
+      drop-shadow(0 0 16px currentColor);
+  }
+
+  50% {
+    filter:
+      brightness(2)
+      drop-shadow(0 0 8px currentColor)
+      drop-shadow(0 0 25px currentColor)
+      drop-shadow(
+        0 0 40px rgba(139, 92, 246, 0.5)
+      );
+  }
+}
+
+/* =========================================================
+   TIME TRAVEL SLIDER
+   ========================================================= */
+
+.memory-timeline-slider {
+  appearance: none;
+
+  height: 2px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    to right,
+    rgba(139, 92, 246, 0.5),
+    rgba(139, 92, 246, 0.15)
+  );
+
+  outline: none;
+  cursor: pointer;
+}
+
+.memory-timeline-slider::-webkit-slider-thumb {
+  appearance: none;
+
+  width: 14px;
+  height: 14px;
+
+  border-radius: 50%;
+  border: 1px solid rgba(196, 181, 253, 0.8);
+
+  background: #a78bfa;
+
+  box-shadow:
+    0 0 10px rgba(167, 139, 250, 0.8),
+    0 0 24px rgba(139, 92, 246, 0.35);
+
+  cursor: grab;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.memory-timeline-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+
+  box-shadow:
+    0 0 14px rgba(167, 139, 250, 1),
+    0 0 30px rgba(139, 92, 246, 0.45);
+}
+
+.memory-timeline-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.15);
+}
+
+.memory-timeline-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+
+  border-radius: 50%;
+  border: 1px solid rgba(196, 181, 253, 0.8);
+
+  background: #a78bfa;
+
+  box-shadow:
+    0 0 10px rgba(167, 139, 250, 0.8),
+    0 0 24px rgba(139, 92, 246, 0.35);
+
+  cursor: grab;
+}
+
+.memory-timeline-slider::-moz-range-track {
+  height: 2px;
+
+  border-radius: 999px;
+
+  background: rgba(139, 92, 246, 0.2);
+}
+
+/* =========================================================
+   CINEMATIC TIME TRAVEL
+   ========================================================= */
+
+/*
+   IMPORTANT:
+   Time Travel changes VISIBILITY.
+   It does NOT change a memory star's brightness,
+   blur, color, or importance.
+*/
+
+/* Other years fade into the distance */
+
+.time-travel-distant {
+  opacity: 0.12 !important;
+  filter: none !important;
+
+  transition:
+    opacity 0.8s ease;
+}
+
+/* Selected-year memory stays visually normal */
+
+.time-travel-target {
+  opacity: 1 !important;
+  filter: none !important;
+
+  animation: none !important;
+
+  z-index: 15 !important;
+}
+
+/* Background stars soften */
+
+.universe-field:has(.time-travel-target)
+  > .universe-star:not(.memory-star) {
+  opacity: 0.45;
+
+  transition:
+    opacity 0.8s ease;
+}
+
+/* Constellation lines become distant */
+
+.universe-field:has(.time-travel-target)
+  .constellation-line {
+  opacity: 0.08;
+
+  transition:
+    opacity 0.8s ease,
+    filter 0.8s ease;
+}
+
+/* Time travel atmosphere */
+
+.universe-field:has(.time-travel-target) {
+  animation:
+    time-travel-breathe
+    1.8s ease-out;
+}
+
+.universe-field:has(.time-travel-target)::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 25;
+
+  pointer-events: none;
+
+  border-radius: inherit;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(167, 139, 250, 0.1) 0%,
+      rgba(139, 92, 246, 0.04) 38%,
+      transparent 72%
+    );
+
+  animation:
+    time-travel-overlay
+    1.8s ease-out;
+}
+
+@keyframes time-travel-breathe {
+  0% {
+    box-shadow:
+      inset 0 0 80px
+        rgba(139, 92, 246, 0.08);
+  }
+
+  35% {
+    box-shadow:
+      inset 0 0 120px
+        rgba(139, 92, 246, 0.22),
+      0 0 45px
+        rgba(139, 92, 246, 0.08);
+  }
+
+  100% {
+    box-shadow:
+      inset 0 0 80px
+        rgba(139, 92, 246, 0.08);
+  }
+}
+
+@keyframes time-travel-overlay {
+  0% {
+    opacity: 0;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Time travel dims constellation labels */
+
+.universe-field:has(.time-travel-target)
+  .constellation-label {
+  opacity: 0.35;
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .cta-button:hover {
+    transform: none;
+  }
+
+  .cta-shimmer {
+    animation: none;
+  }
+
+  .animate-pulse-soft {
+    animation: none;
+  }
+
+  .universe-star {
+    animation: none;
+    opacity: 0.8;
+  }
+
+  .universe-star:hover,
+  .universe-star:focus-visible {
+    scale: 1.3;
+  }
+
+  .memory-modal-backdrop,
+  .memory-modal-content {
+    animation: none;
+  }
+
+  .constellation-line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  .constellation-label {
+    animation: none;
+  }
+
+  .constellation-view-backdrop,
+  .constellation-view {
+    animation: none;
+  }
+
+  .constellation-focus-target {
+    animation: none;
+    transform: scale(1.4);
+  }
+
+  .constellation-focus-distant,
+  .constellation-focus-target {
+    transition: opacity 0.2s ease;
+  }
+
+  .universe-field:has(.time-travel-target) {
+    animation: none !important;
+  }
+
+  .universe-field:has(.time-travel-target)::after {
+    animation: none !important;
+  }
+
+  .time-travel-target {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  .time-travel-distant {
+    transition: opacity 0.2s ease;
+  }
+
+  .constellation-entry-active {
+    transition: none;
+  }
+}
+
+/* =========================================
+   VELORA — COSMIC TIME TRAVEL
+   ========================================= */
+
+.time-traveling {
+  perspective: 900px;
+  transform-origin: center center;
+}
+
+.time-traveling .memory-star {
+  animation: cosmic-star-flight 900ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center;
+}
+
+.time-traveling .memory-star::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 0;
+  border-radius: 999px;
+  background: rgba(196, 181, 253, 0.75);
+  box-shadow:
+    0 0 8px rgba(167, 139, 250, 0.7),
+    0 0 18px rgba(139, 92, 246, 0.4);
+  transform: translate(-50%, -50%);
+  animation: cosmic-star-streak 900ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.time-traveling .time-travel-distant {
+  opacity: 0.12;
+  filter: blur(1.5px);
+  animation: distant-star-flight 900ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes distant-star-flight {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+
+  35% {
+    transform: scale(1.5) translate(
+      calc(var(--warp-x, 0px) * 0.5),
+      calc(var(--warp-y, 0px) * 0.5)
+    );
+  }
+
+  70% {
+    transform: scale(2.2) translate(
+      calc(var(--warp-x, 0px) * 1.2),
+      calc(var(--warp-y, 0px) * 1.2)
+    );
+  }
+
+  100% {
+    transform: scale(1.15) translate(0, 0);
+  }
+}
+
+.time-traveling .time-travel-target {
+  filter:
+    drop-shadow(0 0 8px rgba(167, 139, 250, 0.9))
+    drop-shadow(0 0 20px rgba(139, 92, 246, 0.55));
+}
+
+.time-traveling::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  z-index: 15;
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      transparent 32%,
+      rgba(139, 92, 246, 0.04) 55%,
+      rgba(3, 0, 20, 0.45) 100%
+    );
+  animation: cosmic-vignette 900ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cosmic-star-streak {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+
+  25% {
+    height: 8px;
+    opacity: 0.5;
+  }
+
+  55% {
+    height: 28px;
+    opacity: 0.9;
+  }
+
+  80% {
+    height: 16px;
+    opacity: 0.45;
+  }
+
+  100% {
+    height: 0;
+    opacity: 0;
+  }
+}
+@keyframes cosmic-vignette {
+  0% {
+    opacity: 0;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
