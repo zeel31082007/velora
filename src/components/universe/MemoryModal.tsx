@@ -103,7 +103,7 @@ export default function MemoryModal({
     useState(false);
 
   const [isSaving, setIsSaving] =
-    useState(false);
+    useState(false);    
 
   const [title, setTitle] =
     useState(memory.title);

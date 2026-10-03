@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Memory } from "@/types/memory";
 
 function getTodayDate() {
@@ -17,6 +17,8 @@ interface CreateMemoryProps {
   onCreate: (memory: Memory) => Promise<void>;
   onClose: () => void;
 }
+
+const DRAFT_KEY = "velora-create-memory-draft";
 
 const categories: {
   value: Memory["category"];
@@ -91,13 +93,14 @@ export default function CreateMemory({
   onCreate,
   onClose,
 }: CreateMemoryProps) {
-  const imageInputRef =
-    useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
-  const videoInputRef =
-    useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const today = getTodayDate();
+
+  const DRAFT_KEY = "velora-create-memory-draft";
 
   const [title, setTitle] = useState("");
   const [date, setDate] = useState(today);
@@ -112,11 +115,79 @@ export default function CreateMemory({
   const [image, setImage] =
     useState<string | undefined>();
 
+  const [isDraggingImage, setIsDraggingImage] =
+  useState(false);
+
   const [video, setVideo] =
     useState<string | undefined>();
 
+  useEffect(() => {
+  try {
+    const savedDraft = localStorage.getItem(DRAFT_KEY);
+
+    if (savedDraft) {
+      const draft = JSON.parse(savedDraft);
+
+      setTitle(draft.title ?? "");
+      setDate(draft.date ?? today);
+      setText(draft.text ?? "");
+      setCategory(draft.category ?? "milestone");
+      setImportance(draft.importance ?? "normal");
+    }
+      } catch (error) {
+    console.error("Failed to load memory draft:", error);
+  } finally {
+    setIsDraftLoaded(true);
+  }
+}, []);
+
+useEffect(() => {
+  if (!isDraftLoaded) return;
+
+  try {
+    console.log("VELORA DRAFT SAVING");
+
+    localStorage.setItem(
+      DRAFT_KEY,
+      JSON.stringify({
+        title,
+        date,
+        text,
+        category,
+        importance,
+      }),
+    );
+  } catch (error) {
+    console.error("Failed to save memory draft:", error);
+  }
+}, [title, date, text, category, importance]);
+
+useEffect(() => {
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#050014";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.beginPath();
+  ctx.arc(150, 75, 18, 0, Math.PI * 2);
+  ctx.fillStyle = "#ffffff";
+  ctx.shadowBlur = 25;
+  ctx.shadowColor = "#8b5cf6";
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+}, []);
+
   const [isSaving, setIsSaving] =
     useState(false);
+  const [isDraftLoaded, setIsDraftLoaded] =
+  useState(false);
 
   const handleImageChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -203,6 +274,7 @@ export default function CreateMemory({
         image,
         video,
       });
+      localStorage.removeItem(DRAFT_KEY);
     } catch (error) {
       console.error(
         "Failed to create memory:",
@@ -425,11 +497,42 @@ export default function CreateMemory({
 
                 {!image ? (
                   <button
-                    type="button"
-                    onClick={() =>
-                      imageInputRef.current?.click()
-                    }
-                    className="flex min-h-[145px] w-full flex-col items-center justify-center rounded-2xl border border-dashed border-violet-400/15 bg-white/[0.02] px-3 text-center transition hover:border-violet-400/30 hover:bg-violet-400/[0.04]"
+  type="button"
+  onClick={() =>
+    imageInputRef.current?.click()
+  }
+  onDragOver={(event) => {
+    event.preventDefault();
+    setIsDraggingImage(true);
+  }}
+  onDragLeave={() => {
+    setIsDraggingImage(false);
+  }}
+  onDrop={(event) => {
+    event.preventDefault();
+    setIsDraggingImage(false);
+
+    const file = event.dataTransfer.files?.[0];
+
+    if (!file || !file.type.startsWith("image/")) {
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        setImage(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(file);
+  }}
+                    className={`flex min-h-[145px] w-full flex-col items-center justify-center rounded-2xl border border-dashed px-3 text-center transition ${
+  isDraggingImage
+    ? "border-violet-400/70 bg-violet-400/10"
+    : "border-violet-400/15 bg-white/[0.02] hover:border-violet-400/30 hover:bg-violet-400/[0.04]"
+}`}
                   >
                     <span className="text-2xl">
                       📷
@@ -518,6 +621,15 @@ export default function CreateMemory({
 
             </div>
           </div>
+
+<div className="mt-6 overflow-hidden rounded-2xl border border-violet-400/20 bg-black/30">
+  <canvas
+    ref={canvasRef}
+    width={300}
+    height={150}
+    className="h-auto w-full"
+  />
+</div>
 
           {/* Actions */}
           <div className="flex items-center justify-end gap-3 pt-3">
