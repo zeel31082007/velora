@@ -287,7 +287,7 @@ useEffect(() => {
 
   return (
     <div
-      className="memory-modal-backdrop fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 px-5 py-8 backdrop-blur-md"
+      className="memory-modal-backdrop fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 px-5 py-6 backdrop-blur-md"
       onClick={(event) => {
         if (
           event.target ===
@@ -297,7 +297,7 @@ useEffect(() => {
         }
       }}
     >
-      <div className="memory-modal-content w-full max-w-lg rounded-3xl border border-violet-400/15 bg-[#08021c]/95 p-7 shadow-[0_0_100px_rgba(139,92,246,0.2)] backdrop-blur-2xl sm:p-9">
+      <div className="memory-modal-content max-h-[calc(100vh-3rem)] w-full max-w-lg overflow-y-auto rounded-3xl border border-violet-400/15 bg-[#08021c]/95 p-7 shadow-[0_0_100px_rgba(139,92,246,0.2)] backdrop-blur-2xl sm:p-9">
 
         {/* Header */}
         <div className="flex items-start justify-between gap-5">
