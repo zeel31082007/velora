@@ -96,7 +96,7 @@ export default function CreateMemory({
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const videoInputRef = useRef<HTMLInputElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+
 
   const today = getTodayDate();
 
@@ -161,28 +161,6 @@ useEffect(() => {
     console.error("Failed to save memory draft:", error);
   }
 }, [title, date, text, category, importance]);
-
-useEffect(() => {
-  const canvas = canvasRef.current;
-  if (!canvas) return;
-
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "#050014";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.beginPath();
-  ctx.arc(150, 75, 18, 0, Math.PI * 2);
-  ctx.fillStyle = "#ffffff";
-  ctx.shadowBlur = 25;
-  ctx.shadowColor = "#8b5cf6";
-  ctx.fill();
-
-  ctx.shadowBlur = 0;
-}, []);
 
   const [isSaving, setIsSaving] =
     useState(false);
@@ -621,15 +599,6 @@ useEffect(() => {
 
             </div>
           </div>
-
-<div className="mt-6 overflow-hidden rounded-2xl border border-violet-400/20 bg-black/30">
-  <canvas
-    ref={canvasRef}
-    width={300}
-    height={150}
-    className="h-auto w-full"
-  />
-</div>
 
           {/* Actions */}
           <div className="flex items-center justify-end gap-3 pt-3">
