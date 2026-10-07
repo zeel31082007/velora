@@ -96,8 +96,7 @@ export default function CreateMemory({
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const videoInputRef = useRef<HTMLInputElement>(null);
-
-
+  
   const today = getTodayDate();
 
   const DRAFT_KEY = "velora-create-memory-draft";
