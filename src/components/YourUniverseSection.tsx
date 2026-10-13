@@ -18,6 +18,10 @@ import type { Memory } from "@/types/memory";
 export default function YourUniverseSection() {
   const [memories, setMemories] =
     useState<Memory[]>([]);
+const [newlyCreatedMemoryId, setNewlyCreatedMemoryId] =
+  useState<string | null>(null);
+
+    const [showStarBirth, setShowStarBirth] = useState(false);
 
   const [showCreateMemory, setShowCreateMemory] =
     useState(false);
@@ -41,30 +45,36 @@ export default function YourUniverseSection() {
       });
   }, []);
 
-  const handleCreateMemory = async (
-    memory: Memory,
-  ) => {
-    const memoryWithId: Memory = {
-      ...memory,
-      id: crypto.randomUUID(),
-    };
 
-    try {
-      await saveMemory(memoryWithId);
+const handleCreateMemory = async (memory: Memory) => {
+  try {
+    // Keep the ID created by CreateMemory.tsx
+    await saveMemory(memory);
 
-      setMemories((current) => [
-        ...current,
-        memoryWithId,
-      ]);
+    setMemories((current) => [
+      ...current,
+      memory,
+    ]);
 
-      setShowCreateMemory(false);
-    } catch (error) {
-      console.error(
-        "Failed to save memory:",
-        error,
-      );
-    }
-  };
+    setShowCreateMemory(false);
+
+    
+setNewlyCreatedMemoryId(memory.id);
+setShowStarBirth(true);
+
+window.setTimeout(() => {
+  setShowStarBirth(false);
+}, 3200);
+
+window.setTimeout(() => {
+  setNewlyCreatedMemoryId(null);
+},4200);
+
+  } catch (error) {
+    console.error("Failed to save memory:", error);
+    throw error;
+  }
+};
 
   const handleUpdateMemory = async (
     updatedMemory: Memory,
@@ -133,7 +143,21 @@ export default function YourUniverseSection() {
       id="your-universe"
       className="relative z-10 px-6 py-32 sm:py-40"
     >
-      <div className="mx-auto max-w-5xl">
+  
+
+{showStarBirth && (
+  <div
+    role="status"
+    aria-live="polite"
+    className="fixed bottom-8 left-1/2 z-[100] -translate-x-1/2 rounded-full border border-violet-300/20 bg-[#08021c]/95 px-6 py-4 text-center shadow-[0_0_40px_rgba(139,92,246,0.25)] backdrop-blur-xl"
+  >
+    <p className="text-sm tracking-wide text-violet-100">
+      ✨ A new light enters your universe 🌟
+    </p>
+  </div>
+)}
+
+      <div className="mx-auto w-full max-w-7xl">
 
         {/* Header */}
         <div className="text-center">
@@ -175,6 +199,7 @@ export default function YourUniverseSection() {
             memories={memories}
             selectedYear={selectedYear}
             selectedMemory={selectedMemory}
+            newlyCreatedMemoryId={newlyCreatedMemoryId}
             onDeleteMemory={handleDeleteMemory}
             onUpdateMemory={handleUpdateMemory}
             onClearSelectedMemory={() =>

@@ -7,6 +7,10 @@ import {
 } from "react";
 
 import type { Memory } from "@/types/memory";
+import {
+  getMemoryMediaUrl,
+  uploadMemoryMedia,
+} from "@/lib/mediaStorage";
 
 interface MemoryModalProps {
   memory: Memory;
@@ -93,6 +97,9 @@ export default function MemoryModal({
   const fileInputRef =
     useRef<HTMLInputElement>(null);
 
+    const videoFileInputRef =
+  useRef<HTMLInputElement>(null);
+
   const [isEditing, setIsEditing] =
     useState(false);
 
@@ -128,6 +135,55 @@ export default function MemoryModal({
     useState<string | undefined>(
       memory.image,
     );
+  const [video, setVideo] =
+  useState<string | undefined>(
+    memory.video,
+  );
+
+const [videoFile, setVideoFile] =
+  useState<File | undefined>();
+
+  useEffect(() => {
+  const loadVideoUrl = async () => {
+    if (!memory.videoPath) return;
+
+    try {
+      const signedUrl = await getMemoryMediaUrl(
+        memory.videoPath,
+      );
+
+      setVideo(signedUrl);
+    } catch (error) {
+      console.error(
+        "Failed to load video:",
+        error,
+      );
+    }
+  };
+
+  loadVideoUrl();
+}, [memory.videoPath]);
+
+useEffect(() => {
+  const loadImageUrl = async () => {
+    if (!memory.imagePath) return;
+
+    try {
+      const signedUrl = await getMemoryMediaUrl(
+        memory.imagePath,
+      );
+
+      setImage(signedUrl);
+    } catch (error) {
+      console.error(
+        "Failed to load image:",
+        error,
+      );
+    }
+  };
+
+  loadImageUrl();
+}, [memory.imagePath]);
 
   useEffect(() => {
     const handleKeyDown = (
@@ -214,13 +270,28 @@ export default function MemoryModal({
       importance,
       image,
     };
+try {
+  setIsSaving(true);
 
-    try {
-      setIsSaving(true);
+  let updatedVideoPath = memory.videoPath;
 
-      await onUpdate(updatedMemory);
+  if (videoFile) {
+    updatedVideoPath = await uploadMemoryMedia(
+      videoFile,
+      memory.id,
+    );
+  }
 
-      setIsEditing(false);
+  const finalMemory: Memory = {
+    ...updatedMemory,
+    video: undefined,
+    videoPath: updatedVideoPath,
+  };
+
+ await onUpdate(finalMemory);
+
+setVideoFile(undefined);
+setIsEditing(false);
     } catch (error) {
       console.error(
         "Failed to update memory:",
@@ -238,6 +309,8 @@ export default function MemoryModal({
     setCategory(memory.category);
     setImportance(memory.importance);
     setImage(memory.image);
+    setVideo(memory.video);
+setVideoFile(undefined);
 
     setIsEditing(false);
   };
@@ -293,7 +366,7 @@ export default function MemoryModal({
                 className="text-xl text-zinc-600 transition hover:text-white"
                 aria-label="Close"
               >
-                ×
+                
               </button>
             </div>
 
@@ -303,21 +376,21 @@ export default function MemoryModal({
               {memory.text}
             </p>
 
-            {memory.image && (
-              <img
-                src={memory.image}
-                alt=""
-                className="mt-6 max-h-72 w-full rounded-xl object-cover"
-              />
-            )}
+            {image && (
+  <img
+    src={image}
+    alt=""
+    className="mt-6 max-h-72 w-full rounded-xl object-cover"
+  />
+)}
 
-            {memory.video && (
-              <video
-                src={memory.video}
-                controls
-                className="mt-6 max-h-72 w-full rounded-xl"
-              />
-            )}
+            {video && (
+  <video
+    src={video}
+    controls
+    className="mt-6 max-h-72 w-full rounded-xl"
+  />
+)}
 
             <div className="mt-8 flex items-center justify-between gap-4">
               <button
@@ -572,6 +645,21 @@ export default function MemoryModal({
                   }
                   className="hidden"
                 />
+                <input
+  ref={videoFileInputRef}
+  type="file"
+  accept="video/*"
+  onChange={(event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+    if (!file.type.startsWith("video/")) return;
+
+    setVideoFile(file);
+    setVideo(URL.createObjectURL(file));
+  }}
+  className="hidden"
+/>
 
                 {!image ? (
                   <button
@@ -611,6 +699,50 @@ export default function MemoryModal({
                   </div>
                 )}
               </div>
+              {/* Video */}
+<div>
+  <label className="text-[10px] uppercase tracking-[0.25em] text-zinc-500">
+    Video
+  </label>
+
+  {!video ? (
+    <button
+      type="button"
+      onClick={() =>
+        videoFileInputRef.current?.click()
+      }
+      className="mt-3 flex w-full flex-col items-center justify-center rounded-2xl border border-dashed border-violet-400/15 bg-white/[0.02] px-5 py-7 text-center transition hover:border-violet-400/30 hover:bg-violet-400/[0.04]"
+    >
+      <span className="text-2xl">
+        +
+      </span>
+
+      <span className="mt-2 text-[10px] uppercase tracking-[0.2em] text-zinc-500">
+        Add a video
+      </span>
+    </button>
+  ) : (
+    <div className="relative mt-3 overflow-hidden rounded-2xl border border-violet-400/15">
+      <video
+        src={video}
+        controls
+        className="max-h-64 w-full"
+      />
+
+      <button
+        type="button"
+        onClick={() => {
+          setVideo(undefined);
+          setVideoFile(undefined);
+        }}
+        className="absolute right-3 top-3 rounded-full border border-white/10 bg-black/60 px-3 py-1 text-xs text-white backdrop-blur-md transition hover:bg-black/80"
+      >
+        Remove
+      </button>
+    </div>
+  )}
+</div>
+
 
               {/* Actions */}
               <div className="flex items-center justify-end gap-3 pt-2">

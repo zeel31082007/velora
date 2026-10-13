@@ -13,5 +13,7 @@ export interface Memory {
     | "reflection"
     | "milestone";
   image?: string;
-  video?: string;
+video?: string;
+imagePath?: string;
+videoPath?: string;
 }

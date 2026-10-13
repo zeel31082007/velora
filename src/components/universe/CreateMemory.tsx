@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Memory } from "@/types/memory";
+import { uploadMemoryMedia } from "@/lib/mediaStorage";
 
 function getTodayDate() {
   const today = new Date();
@@ -111,14 +112,19 @@ export default function CreateMemory({
   const [category, setCategory] =
     useState<Memory["category"]>("milestone");
 
-  const [image, setImage] =
-    useState<string | undefined>();
-
   const [isDraggingImage, setIsDraggingImage] =
   useState(false);
+const [image, setImage] =
+  useState<string | undefined>();
 
-  const [video, setVideo] =
-    useState<string | undefined>();
+const [video, setVideo] =
+  useState<string | undefined>();
+
+const [imageFile, setImageFile] =
+  useState<File | undefined>();
+
+const [videoFile, setVideoFile] =
+  useState<File | undefined>();
 
   useEffect(() => {
   try {
@@ -166,59 +172,29 @@ useEffect(() => {
   const [isDraftLoaded, setIsDraftLoaded] =
   useState(false);
 
-  const handleImageChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file =
-      event.target.files?.[0];
+const handleImageChange = (
+  event: React.ChangeEvent<HTMLInputElement>,
+) => {
+  const file = event.target.files?.[0];
 
-    if (!file) {
-      return;
-    }
+  if (!file) return;
+  if (!file.type.startsWith("image/")) return;
 
-    if (!file.type.startsWith("image/")) {
-      return;
-    }
+  setImageFile(file);
+  setImage(URL.createObjectURL(file));
+};
 
-    const reader = new FileReader();
+const handleVideoChange = (
+  event: React.ChangeEvent<HTMLInputElement>,
+) => {
+  const file = event.target.files?.[0];
 
-    reader.onload = () => {
-      if (
-        typeof reader.result === "string"
-      ) {
-        setImage(reader.result);
-      }
-    };
+  if (!file) return;
+  if (!file.type.startsWith("video/")) return;
 
-    reader.readAsDataURL(file);
-  };
-
-  const handleVideoChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file =
-      event.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    if (!file.type.startsWith("video/")) {
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      if (
-        typeof reader.result === "string"
-      ) {
-        setVideo(reader.result);
-      }
-    };
-
-    reader.readAsDataURL(file);
-  };
+  setVideoFile(file);
+  setVideo(URL.createObjectURL(file));
+};
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -239,18 +215,37 @@ useEffect(() => {
     }
 
     try {
-      setIsSaving(true);
+  setIsSaving(true);
 
-      await onCreate({
-        id: "",
-        title: title.trim(),
-        date,
-        text: text.trim(),
-        importance,
-        category,
-        image,
-        video,
-      });
+  const memoryId = crypto.randomUUID();
+
+  let imagePath: string | undefined;
+  let videoPath: string | undefined;
+
+  if (imageFile) {
+    imagePath = await uploadMemoryMedia(
+      imageFile,
+      memoryId,
+    );
+  }
+
+  if (videoFile) {
+    videoPath = await uploadMemoryMedia(
+      videoFile,
+      memoryId,
+    );
+  }
+
+  await onCreate({
+    id: memoryId,
+    title: title.trim(),
+    date,
+    text: text.trim(),
+    importance,
+    category,
+    imagePath,
+    videoPath,
+  });
       localStorage.removeItem(DRAFT_KEY);
     } catch (error) {
       console.error(
@@ -533,9 +528,10 @@ useEffect(() => {
 
                     <button
                       type="button"
-                      onClick={() =>
-                        setImage(undefined)
-                      }
+                      onClick={() => {
+                    setImage(undefined);
+                    setImageFile(undefined);
+                      }}
                       className="absolute right-2 top-2 rounded-full border border-white/10 bg-black/70 px-2.5 py-1 text-xs text-white backdrop-blur-md transition hover:bg-black/90"
                     >
                       Remove
@@ -585,9 +581,10 @@ useEffect(() => {
 
                     <button
                       type="button"
-                      onClick={() =>
-                        setVideo(undefined)
-                      }
+                      onClick={() => {
+                      setVideo(undefined);
+                         setVideoFile(undefined);
+                              }}
                       className="absolute right-2 top-2 rounded-full border border-white/10 bg-black/70 px-2.5 py-1 text-xs text-white backdrop-blur-md transition hover:bg-black/90"
                     >
                       Remove
